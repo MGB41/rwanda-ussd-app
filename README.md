@@ -1,18 +1,20 @@
 # Rwanda USSD Application
 
-A USSD application for Rwanda that provides various services information in both English and Kinyarwanda languages.
+A USSD application for Rwanda that provides ticket buying and car marketplace services in both English and Kinyarwanda languages.
 
 ## Features
 
 - Bilingual support (English and Kinyarwanda)
 - Multi-level menu navigation
-- Information about healthcare, education, and transportation services
-- Contact information
+- Bus, event, and flight ticket purchasing
+- Car marketplace for browsing and selling cars
+- MySQL database integration for data persistence
 
 ## Technical Stack
 
 - Node.js
 - Express.js
+- MySQL database
 - Africa's Talking USSD API
 - Hosted on Render
 
@@ -34,21 +36,41 @@ npm install
 PORT=3000
 AFRICAS_TALKING_API_KEY=your_api_key_here
 AFRICAS_TALKING_USERNAME=your_username_here
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password_here
+DB_NAME=rwanda_ussd
 ```
 
-4. Start the application:
+4. Initialize the database:
+```bash
+npm run init-db
+```
+
+5. Start the application:
 ```bash
 npm start
 ```
+
+## Database Schema
+
+The application uses a MySQL database with the following tables:
+- `bus_tickets`: Stores bus ticket information
+- `event_tickets`: Stores event ticket information
+- `flight_tickets`: Stores flight ticket information
+- `cars`: Stores car listings information
+- `bookings`: Records ticket bookings
+- `users`: Stores user information
 
 ## Deployment to Render
 
 1. Create a new Web Service on Render
 2. Connect your GitHub repository
 3. Use the following settings:
-   - Build Command: `npm install`
+   - Build Command: `npm install && npm run init-db`
    - Start Command: `npm start`
 4. Add the environment variables in the Render dashboard
+5. Set up a MySQL database (you can use Render's database service or an external provider)
 
 ## Africa's Talking Configuration
 
@@ -81,3 +103,4 @@ git commit -m "Initial commit"
 ```bash
 git remote add origin https://github.com/yourusername/rwanda-ussd-app.git
 git push -u origin main
+```
