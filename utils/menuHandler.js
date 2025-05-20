@@ -11,9 +11,13 @@ class MenuHandler {
       this.sessions[sessionId] = {
         language: 'en',
         level: 'welcome',
-        history: []
+        history: [],
+        lastActivity: Date.now()
       };
     }
+
+    // Update last activity timestamp
+    this.sessions[sessionId].lastActivity = Date.now();
 
     const session = this.sessions[sessionId];
     const { language, level } = session;
@@ -30,22 +34,32 @@ class MenuHandler {
     switch (level) {
       case 'welcome':
         return this.handleWelcomeMenu(session, userInput);
-      case 'findServices':
-        return this.handleFindServicesMenu(session, userInput);
+      case 'buyTickets':
+        return this.handleBuyTicketsMenu(session, userInput);
+      case 'carMarketplace':
+        return this.handleCarMarketplaceMenu(session, userInput);
       case 'contactUs':
         return this.handleContactUsMenu(session, userInput);
-      case 'healthcare':
-        return this.handleHealthcareMenu(session, userInput);
-      case 'education':
-        return this.handleEducationMenu(session, userInput);
-      case 'transportation':
-        return this.handleTransportationMenu(session, userInput);
-      case 'findHospital':
-      case 'emergencyNumbers':
-      case 'schools':
-      case 'universities':
-      case 'publicTransport':
-      case 'taxiServices':
+      case 'busTickets':
+        return this.handleBusTicketsMenu(session, userInput);
+      case 'eventTickets':
+        return this.handleEventTicketsMenu(session, userInput);
+      case 'flightTickets':
+        return this.handleFlightTicketsMenu(session, userInput);
+      case 'browseCars':
+        return this.handleBrowseCarsMenu(session, userInput);
+      case 'sellYourCar':
+        return this.handleSellYourCarMenu(session, userInput);
+      case 'kigaliButare':
+      case 'kigaliGisenyi':
+      case 'concerts':
+      case 'sportsEvents':
+      case 'domesticFlights':
+      case 'internationalFlights':
+      case 'sedanCars':
+      case 'suvCars':
+      case 'submitCarDetails':
+      case 'pricingGuide':
         return this.handleSubMenu(session, userInput);
       default:
         return {
@@ -60,17 +74,17 @@ class MenuHandler {
     
     switch (userInput) {
       case '1':
-        session.level = 'findServices';
+        session.level = 'buyTickets';
         session.history.push('welcome');
         return {
-          response: translations[language].findServices,
+          response: translations[language].buyTickets,
           endSession: false
         };
       case '2':
-        session.level = 'contactUs';
+        session.level = 'carMarketplace';
         session.history.push('welcome');
         return {
-          response: translations[language].contactUs,
+          response: translations[language].carMarketplace,
           endSession: false
         };
       case '3':
@@ -88,29 +102,29 @@ class MenuHandler {
     }
   }
 
-  handleFindServicesMenu(session, userInput) {
+  handleBuyTicketsMenu(session, userInput) {
     const { language } = session;
     
     switch (userInput) {
       case '1':
-        session.level = 'healthcare';
-        session.history.push('findServices');
+        session.level = 'busTickets';
+        session.history.push('buyTickets');
         return {
-          response: translations[language].healthcare,
+          response: translations[language].busTickets,
           endSession: false
         };
       case '2':
-        session.level = 'education';
-        session.history.push('findServices');
+        session.level = 'eventTickets';
+        session.history.push('buyTickets');
         return {
-          response: translations[language].education,
+          response: translations[language].eventTickets,
           endSession: false
         };
       case '3':
-        session.level = 'transportation';
-        session.history.push('findServices');
+        session.level = 'flightTickets';
+        session.history.push('buyTickets');
         return {
-          response: translations[language].transportation,
+          response: translations[language].flightTickets,
           endSession: false
         };
       case '4':
@@ -123,7 +137,41 @@ class MenuHandler {
         };
       default:
         return {
-          response: translations[language].invalidOption + '\n' + translations[language].findServices,
+          response: translations[language].invalidOption + '\n' + translations[language].buyTickets,
+          endSession: false
+        };
+    }
+  }
+
+  handleCarMarketplaceMenu(session, userInput) {
+    const { language } = session;
+    
+    switch (userInput) {
+      case '1':
+        session.level = 'browseCars';
+        session.history.push('carMarketplace');
+        return {
+          response: translations[language].browseCars,
+          endSession: false
+        };
+      case '2':
+        session.level = 'sellYourCar';
+        session.history.push('carMarketplace');
+        return {
+          response: translations[language].sellYourCar,
+          endSession: false
+        };
+      case '3':
+        // Back to main menu
+        session.level = 'welcome';
+        session.history = [];
+        return {
+          response: translations[language].welcome,
+          endSession: false
+        };
+      default:
+        return {
+          response: translations[language].invalidOption + '\n' + translations[language].carMarketplace,
           endSession: false
         };
     }
@@ -147,22 +195,22 @@ class MenuHandler {
     }
   }
 
-  handleHealthcareMenu(session, userInput) {
+  handleBusTicketsMenu(session, userInput) {
     const { language } = session;
     
     switch (userInput) {
       case '1':
-        session.level = 'findHospital';
-        session.history.push('healthcare');
+        session.level = 'kigaliButare';
+        session.history.push('busTickets');
         return {
-          response: translations[language].findHospital,
+          response: translations[language].kigaliButare,
           endSession: false
         };
       case '2':
-        session.level = 'emergencyNumbers';
-        session.history.push('healthcare');
+        session.level = 'kigaliGisenyi';
+        session.history.push('busTickets');
         return {
-          response: translations[language].emergencyNumbers,
+          response: translations[language].kigaliGisenyi,
           endSession: false
         };
       case '3':
@@ -170,28 +218,28 @@ class MenuHandler {
         return this.goBack(session);
       default:
         return {
-          response: translations[language].invalidOption + '\n' + translations[language].healthcare,
+          response: translations[language].invalidOption + '\n' + translations[language].busTickets,
           endSession: false
         };
     }
   }
 
-  handleEducationMenu(session, userInput) {
+  handleEventTicketsMenu(session, userInput) {
     const { language } = session;
     
     switch (userInput) {
       case '1':
-        session.level = 'schools';
-        session.history.push('education');
+        session.level = 'concerts';
+        session.history.push('eventTickets');
         return {
-          response: translations[language].schools,
+          response: translations[language].concerts,
           endSession: false
         };
       case '2':
-        session.level = 'universities';
-        session.history.push('education');
+        session.level = 'sportsEvents';
+        session.history.push('eventTickets');
         return {
-          response: translations[language].universities,
+          response: translations[language].sportsEvents,
           endSession: false
         };
       case '3':
@@ -199,28 +247,28 @@ class MenuHandler {
         return this.goBack(session);
       default:
         return {
-          response: translations[language].invalidOption + '\n' + translations[language].education,
+          response: translations[language].invalidOption + '\n' + translations[language].eventTickets,
           endSession: false
         };
     }
   }
 
-  handleTransportationMenu(session, userInput) {
+  handleFlightTicketsMenu(session, userInput) {
     const { language } = session;
     
     switch (userInput) {
       case '1':
-        session.level = 'publicTransport';
-        session.history.push('transportation');
+        session.level = 'domesticFlights';
+        session.history.push('flightTickets');
         return {
-          response: translations[language].publicTransport,
+          response: translations[language].domesticFlights,
           endSession: false
         };
       case '2':
-        session.level = 'taxiServices';
-        session.history.push('transportation');
+        session.level = 'internationalFlights';
+        session.history.push('flightTickets');
         return {
-          response: translations[language].taxiServices,
+          response: translations[language].internationalFlights,
           endSession: false
         };
       case '3':
@@ -228,15 +276,73 @@ class MenuHandler {
         return this.goBack(session);
       default:
         return {
-          response: translations[language].invalidOption + '\n' + translations[language].transportation,
+          response: translations[language].invalidOption + '\n' + translations[language].flightTickets,
+          endSession: false
+        };
+    }
+  }
+
+  handleBrowseCarsMenu(session, userInput) {
+    const { language } = session;
+    
+    switch (userInput) {
+      case '1':
+        session.level = 'sedanCars';
+        session.history.push('browseCars');
+        return {
+          response: translations[language].sedanCars,
+          endSession: false
+        };
+      case '2':
+        session.level = 'suvCars';
+        session.history.push('browseCars');
+        return {
+          response: translations[language].suvCars,
+          endSession: false
+        };
+      case '3':
+        // Go back
+        return this.goBack(session);
+      default:
+        return {
+          response: translations[language].invalidOption + '\n' + translations[language].browseCars,
+          endSession: false
+        };
+    }
+  }
+
+  handleSellYourCarMenu(session, userInput) {
+    const { language } = session;
+    
+    switch (userInput) {
+      case '1':
+        session.level = 'submitCarDetails';
+        session.history.push('sellYourCar');
+        return {
+          response: translations[language].submitCarDetails,
+          endSession: false
+        };
+      case '2':
+        session.level = 'pricingGuide';
+        session.history.push('sellYourCar');
+        return {
+          response: translations[language].pricingGuide,
+          endSession: false
+        };
+      case '3':
+        // Go back
+        return this.goBack(session);
+      default:
+        return {
+          response: translations[language].invalidOption + '\n' + translations[language].sellYourCar,
           endSession: false
         };
     }
   }
 
   handleSubMenu(session, userInput) {
-    // For all leaf menus, option 3 is "Back"
-    if (userInput === '3' || userInput === '1') {
+    // For all leaf menus, option 1 or 3 is "Back"
+    if (userInput === '1' || userInput === '3') {
       return this.goBack(session);
     } else {
       const { language, level } = session;
